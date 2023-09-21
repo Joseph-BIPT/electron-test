@@ -5,7 +5,7 @@
  *
  * https://www.electronjs.org/docs/latest/tutorial/sandbox
  */
-window.addEventListener('DOMContentLoaded', () => {
+/* window.addEventListener('DOMContentLoaded', () => {
   const replaceText = (selector, text) => {
     const element = document.getElementById(selector)
     if (element) element.innerText = text
@@ -14,4 +14,28 @@ window.addEventListener('DOMContentLoaded', () => {
   for (const type of ['chrome', 'node', 'electron']) {
     replaceText(`${type}-version`, process.versions[type])
   }
+}) */
+
+/* window.addEventListener('DOMContentLoaded', () => {
+	const replaceText = (selector, text) => {
+		const element = document.getElementById(selector)
+
+		if(element) element.innerText = text+'\n';
+	}
+
+	for(const dependency of ['chrome', 'node', 'electron']) {
+		replaceText(`${dependency}-version`, process.versions[dependency])
+	}
 })
+ */
+
+ const { contextBridge, ipcRenderer } = require('electron')
+
+ contextBridge.exposeInMainWorld('versions', {
+	node: () => process.versions.node,
+	chrome: () => process.versions.chrome,
+	electron: () => process.versions.electron,
+	ping: () => ipcRenderer.invoke('ping')
+ })
+
+ 
